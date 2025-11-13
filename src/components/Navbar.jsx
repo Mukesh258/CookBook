@@ -14,11 +14,17 @@ const Navbar = ({ onVoiceSearch }) => {
 
   const isActive = (path) => location.pathname === path;
   const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setUser(getCurrentUser());
   }, [location]);
+
+  // Close mobile menu on navigation
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   const handleSignOut = () => {
     signOut();
@@ -39,34 +45,39 @@ const Navbar = ({ onVoiceSearch }) => {
           <span>CookBook</span>
         </Link>
 
-        <div className="navbar-menu">
+        <div className={`navbar-menu ${menuOpen ? 'open' : ''}`}>
           <Link 
             to="/" 
             className={`navbar-link ${isActive('/') ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
           >
             {t('home')}
           </Link>
           <Link 
             to="/my-cookbook" 
             className={`navbar-link ${isActive('/my-cookbook') ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
           >
             {t('myCookbook')}
           </Link>
           <Link 
             to="/upload" 
             className={`navbar-link ${isActive('/upload') ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
           >
             {t('upload')}
           </Link>
           <Link 
             to="/community" 
             className={`navbar-link ${isActive('/community') ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
           >
             {t('community')}
           </Link>
           <Link 
             to="/about" 
             className={`navbar-link ${isActive('/about') ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
           >
             {t('about')}
           </Link>
@@ -88,8 +99,17 @@ const Navbar = ({ onVoiceSearch }) => {
           )}
         </div>
 
-        <button className="navbar-toggle" aria-label="Toggle menu">
-          <i className="fas fa-bars"></i>
+        <button
+          className="navbar-toggle"
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((s) => !s)}
+        >
+          <span className="hamburger" aria-hidden="true">
+            <span className="line" />
+            <span className="line" />
+            <span className="line" />
+          </span>
         </button>
       </div>
     </motion.nav>
