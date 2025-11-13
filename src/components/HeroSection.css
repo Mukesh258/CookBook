@@ -10,7 +10,41 @@
 }
 
 .hero-background {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  /* default gradient fallback */
+  background-image: radial-gradient(circle at 10% 20%, rgba(255,107,53,0.08), transparent 15%), radial-gradient(circle at 90% 80%, rgba(139,69,19,0.06), transparent 18%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+  opacity: 1;
+}
+
+/* Use image files if present in public/assets. Desktop first */
+@media (min-width: 992px) {
+  .hero-background {
+    background-image: url('/assets/hero-desktop.jpg'), radial-gradient(circle at 10% 20%, rgba(255,107,53,0.06), transparent 15%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 991px) {
+  .hero-background {
+    background-image: url('/assets/hero-tablet.jpg'), radial-gradient(circle at 10% 20%, rgba(255,107,53,0.06), transparent 15%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+  }
+}
+
+/* Mobile - simpler image or just the gradient */
+@media (max-width: 768px) {
+  .hero-background {
+    background-image: url('/assets/hero-mobile.jpg'), radial-gradient(circle at 10% 20%, rgba(255,107,53,0.06), transparent 12%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    background-position: center top;
+    background-size: cover;
+    opacity: 0.95;
+  }
 }
 
 @keyframes float {
@@ -104,7 +138,7 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    min-height: 400px;
+    min-height: 320px;
     padding: 2rem 0;
   }
 
@@ -123,6 +157,26 @@
   .hero-cuisine-button {
     padding: 0.55rem 1.4rem;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 260px;
+    padding: 1.25rem 0;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    max-width: 90%;
+  }
+
+  .hero-icon i {
+    font-size: 3.25rem;
   }
 }
 
