@@ -56,3 +56,14 @@
   color: var(--text-secondary);
 }
 
+@media (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 0 0.75rem;
+  }
+
+  .footer-bottom {
+    padding-top: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
