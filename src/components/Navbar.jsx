@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useTranslation } from '../contexts/TranslationContext';
 import ThemeToggle from './ThemeToggle';
 import LanguageSwitcher from './LanguageSwitcher';
-import VoiceSearchButton from './VoiceSearchButton';
 import './Navbar.css';
 import { getCurrentUser, signOut } from '../utils/localStorage';
 
@@ -84,7 +83,6 @@ const Navbar = ({ onVoiceSearch }) => {
         </div>
 
         <div className="navbar-actions">
-          <VoiceSearchButton onVoiceResult={onVoiceSearch} />
           <LanguageSwitcher onLanguageChange={setCurrentLanguage} />
           <ThemeToggle />
           {user ? (
