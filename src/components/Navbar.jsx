@@ -116,3 +116,4 @@ const Navbar = ({ onVoiceSearch }) => {
 
 export default Navbar;
 
+
