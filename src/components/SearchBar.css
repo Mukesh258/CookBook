@@ -57,7 +57,9 @@
 
 @media (max-width: 768px) {
   .search-input-wrapper {
-    padding: 0.4rem;
+    padding: 0.35rem;
+    gap: 0.35rem;
+    align-items: center;
   }
 
   .search-input {
@@ -68,6 +70,27 @@
   .search-button {
     padding: 0.6rem 1rem;
     min-width: 45px;
+  }
+}
+
+/* Compact voice button when placed next to input */
+.search-input-wrapper .voice-search-btn {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .search-input-wrapper {
+    padding: 0.3rem;
+  }
+
+  .search-button {
+    padding: 0.5rem 0.8rem;
+    min-width: 40px;
   }
 }
 
