@@ -1,0 +1,109 @@
+.ingredient-checklist {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.checklist-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.checklist-header i {
+  color: var(--accent-orange);
+}
+
+.checklist-progress {
+  background: var(--accent-orange);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.checklist-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checklist-item {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.checklist-item:hover {
+  border-color: var(--accent-orange);
+  transform: translateX(4px);
+}
+
+.checklist-item.checked {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-green);
+  opacity: 0.7;
+}
+
+.checklist-item label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checklist-item input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.checklist-item input[type="checkbox"]:checked + .checkmark {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.checklist-item input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.ingredient-text {
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.checklist-item.checked .ingredient-text {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+

@@ -1,0 +1,130 @@
+.recipe-of-the-day {
+  padding: 4rem 0;
+  background: transparent;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.recipe-of-the-day.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.section-title i {
+  color: var(--accent-orange);
+}
+
+.recipe-of-the-day-card {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.recipe-of-the-day-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.2);
+}
+
+.recipe-of-the-day-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.recipe-of-the-day-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recipe-of-the-day-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--accent-orange);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.recipe-of-the-day-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.recipe-of-the-day-content h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.recipe-category,
+.recipe-cuisine {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recipe-category i,
+.recipe-cuisine i {
+  color: var(--accent-orange);
+}
+
+.recipe-of-the-day-cta {
+  margin-top: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-orange);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.recipe-of-the-day-card:hover .recipe-of-the-day-cta {
+  transform: translateX(8px);
+}
+
+@media (max-width: 968px) {
+  .recipe-of-the-day-card {
+    grid-template-columns: 1fr;
+  }
+
+  .recipe-of-the-day-image {
+    min-height: 250px;
+  }
+}
+
