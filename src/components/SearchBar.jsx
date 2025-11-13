@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './SearchBar.css';
+import VoiceSearchButton from './VoiceSearchButton';
 
-const SearchBar = ({ onSearch, placeholder = 'Search recipes...' }) => {
+const SearchBar = ({ onSearch, onVoiceResult, placeholder = 'Search recipes...' }) => {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e) => {
@@ -34,6 +35,12 @@ const SearchBar = ({ onSearch, placeholder = 'Search recipes...' }) => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
         />
+        <VoiceSearchButton onVoiceResult={(text) => {
+          setQuery(text);
+          if (onVoiceResult) onVoiceResult(text);
+          // trigger search automatically after voice input
+          if (onSearch) onSearch(text);
+        }} />
         <button type="submit" className="search-button" onClick={handleSearchClick}>
           <i className="fas fa-search"></i>
         </button>
