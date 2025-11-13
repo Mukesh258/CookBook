@@ -144,3 +144,26 @@
   }
 }
 
+@media (max-width: 480px) {
+  .recipe-details {
+    padding: 1rem 0;
+  }
+
+  .recipe-details-header {
+    gap: 1.25rem;
+  }
+
+  .recipe-section {
+    padding: 1rem;
+  }
+
+  .instructions-list li {
+    padding: 1rem;
+    padding-left: 3.5rem;
+  }
+
+  .recipe-details-image {
+    max-height: 280px;
+  }
+}
+
