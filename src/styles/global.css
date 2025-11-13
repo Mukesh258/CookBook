@@ -42,6 +42,13 @@
   box-sizing: border-box;
 }
 
+/* Make media elements responsive by default */
+img, picture, video, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 body {
   font-family: 'Poppins', 'Nunito', sans-serif;
   background-color: var(--bg-primary);
