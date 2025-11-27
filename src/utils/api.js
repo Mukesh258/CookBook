@@ -81,3 +81,61 @@ export const parseRecipeIngredients = (recipe) => {
   return ingredients;
 };
 
+// Local JSON server (dev) — optional endpoints for uploaded recipes
+const SERVER_BASE = 'http://localhost:3000';
+
+export const getUploadedRecipesFromServer = async () => {
+  try {
+    const res = await fetch(`${SERVER_BASE}/recipes`);
+    if (!res.ok) throw new Error('Network response not ok');
+    const data = await res.json();
+    return data || [];
+  } catch (error) {
+    console.warn('Could not fetch uploaded recipes from server:', error);
+    return [];
+  }
+};
+
+export const getUploadedRecipeFromServer = async (id) => {
+  try {
+    const res = await fetch(`${SERVER_BASE}/recipes/${id}`);
+    if (!res.ok) {
+      if (res.status === 404) return null;
+      throw new Error('Network response not ok');
+    }
+    const data = await res.json();
+    return data || null;
+  } catch (error) {
+    console.warn('Could not fetch uploaded recipe from server:', error);
+    return null;
+  }
+};
+
+export const postUploadedRecipe = async (recipe) => {
+  try {
+    const res = await fetch(`${SERVER_BASE}/recipes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(recipe)
+    });
+    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+    const saved = await res.json();
+    return saved;
+  } catch (error) {
+    console.warn('Could not post recipe to server:', error);
+    return null;
+  }
+};
+
+export const deleteUploadedRecipeFromServer = async (id) => {
+  try {
+    const res = await fetch(`${SERVER_BASE}/recipes/${id}`, {
+      method: 'DELETE'
+    });
+    return res.ok;
+  } catch (error) {
+    console.warn('Could not delete recipe from server:', error);
+    return false;
+  }
+};
+
