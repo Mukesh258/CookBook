@@ -89,6 +89,22 @@ export const removeUploadedRecipe = (recipeId) => {
   }
 };
 
+export const removeUploadedRecipeByName = (name) => {
+  try {
+    if (!name) return false;
+    const uploaded = getUploadedRecipes();
+    const filtered = uploaded.filter(r => {
+      const n = (r.name || r.strMeal || '').toLowerCase();
+      return n !== name.toLowerCase();
+    });
+    localStorage.setItem(UPLOADED_RECIPES_KEY, JSON.stringify(filtered));
+    return true;
+  } catch (error) {
+    console.error('Error removing uploaded recipe by name:', error);
+    return false;
+  }
+};
+
 // Ratings
 export const getRecipeRating = (recipeId) => {
   try {
