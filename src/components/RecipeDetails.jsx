@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getRecipeById, parseRecipeIngredients } from '../utils/api';
+import { getUploadedRecipeFromServer } from '../utils/api';
 import { saveRecipe, removeSavedRecipe, isRecipeSaved, getUploadedRecipes } from '../utils/localStorage';
 import { translateText } from '../utils/translation';
 import { getCurrentLanguage } from '../utils/translation';
@@ -46,13 +47,13 @@ const RecipeDetails = () => {
         }
       } else {
         // API recipe
-        const recipeData = await getRecipeById(id);
+        // First try TheMealDB
+        let recipeData = await getRecipeById(id);
         if (recipeData) {
           setRecipe(recipeData);
           setSaved(isRecipeSaved(id));
           const parsedIngredients = parseRecipeIngredients(recipeData);
           setIngredients(parsedIngredients);
-          
           // Parse instructions
           const steps = recipeData.strInstructions
             .split('\n')
@@ -60,6 +61,24 @@ const RecipeDetails = () => {
             .map(step => step.trim());
           setInstructions(steps);
           setTranslatedInstructions(steps);
+        } else {
+          // If not found in API, try local json-server
+          const uploaded = await getUploadedRecipeFromServer(id).catch(() => null);
+          if (uploaded) {
+            setRecipe({
+              ...uploaded,
+              strMeal: uploaded.name || uploaded.strMeal,
+              strMealThumb: uploaded.image || uploaded.strMealThumb,
+              strCategory: uploaded.category || uploaded.strCategory,
+              strArea: uploaded.cuisine || uploaded.strArea,
+              strInstructions: uploaded.steps ? uploaded.steps.join('\n') : uploaded.strInstructions
+            });
+            setSaved(isRecipeSaved(id));
+            setIngredients(uploaded.ingredients || []);
+            const steps = uploaded.steps || (uploaded.strInstructions ? uploaded.strInstructions.split('\n').filter(Boolean) : []);
+            setInstructions(steps);
+            setTranslatedInstructions(steps);
+          }
         }
       }
       setLoading(false);
