@@ -9,6 +9,8 @@ import {
   getIndianRecipes,
   getRecipeById
 } from '../utils/api';
+import { getUploadedRecipesFromServer } from '../utils/api';
+import { getUploadedRecipes } from '../utils/localStorage';
 import './Home.css';
 
 const Home = () => {
@@ -58,8 +60,25 @@ const Home = () => {
     setHasSearched(true);
     try {
       // Search by name only
-      const results = await searchRecipesByName(query);
-      setRecipes(results);
+      const apiResults = await searchRecipesByName(query);
+
+      // Fetch uploaded recipes from local json-server (dev) and from localStorage fallback
+      const [serverUploaded, localUploaded] = await Promise.all([
+        getUploadedRecipesFromServer().catch(() => []),
+        Promise.resolve(getUploadedRecipes())
+      ]);
+
+      const allUploaded = [...(serverUploaded || []), ...(localUploaded || [])];
+
+      const q = query.trim().toLowerCase();
+      const uploadedMatches = allUploaded.filter(r => (r.name || r.strMeal || '').toLowerCase().includes(q));
+
+      // Merge: prefer API results first, then uploaded matches that aren't duplicates
+      const normalizedApiIds = new Set((apiResults || []).map(r => r.idMeal));
+      const uniqueUploaded = uploadedMatches.filter(u => !normalizedApiIds.has(String(u.id) || u.idMeal));
+
+      const combined = [...(apiResults || []), ...uniqueUploaded];
+      setRecipes(combined);
     } catch (err) {
       setError('Search failed. Please try again.');
       console.error('Search error:', err);
