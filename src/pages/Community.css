@@ -47,6 +47,27 @@
   position: relative;
 }
 
+.community-recipe-card .card-delete {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 30;
+  background: rgba(231, 76, 60, 0.95);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.community-recipe-card .card-delete:hover {
+  transform: scale(1.05);
+}
+
 .community-recipe-info {
   margin-top: 1rem;
   display: flex;
