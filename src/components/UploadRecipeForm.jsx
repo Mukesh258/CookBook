@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { saveUploadedRecipe } from '../utils/localStorage';
+import { postUploadedRecipe } from '../utils/api';
 import { translateText } from '../utils/translation';
 import { getCurrentLanguage } from '../utils/translation';
 import './UploadRecipeForm.css';
@@ -113,7 +114,18 @@ const UploadRecipeForm = ({ onSuccess }) => {
       strInstructions: formData.steps.join('\n')
     };
 
-    const saved = saveUploadedRecipe(recipe);
+    // Try to POST to local json-server first, fall back to localStorage
+    let saved = null;
+    try {
+      saved = await postUploadedRecipe(recipe);
+    } catch (err) {
+      saved = null;
+    }
+
+    if (!saved) {
+      saved = saveUploadedRecipe(recipe);
+    }
+
     if (saved) {
       setFormData({
         name: '',
