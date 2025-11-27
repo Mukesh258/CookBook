@@ -82,8 +82,7 @@ export const parseRecipeIngredients = (recipe) => {
 };
 
 // Local JSON server (dev) — optional endpoints for uploaded recipes
-// Use Vite env var in production: set VITE_JSON_SERVER_URL in Vercel (e.g. https://your-render-url or https://your-render-url/api)
-const SERVER_BASE = import.meta.env.VITE_JSON_SERVER_URL || 'http://localhost:3000';
+const SERVER_BASE = 'http://localhost:3000';
 
 export const getUploadedRecipesFromServer = async () => {
   try {
