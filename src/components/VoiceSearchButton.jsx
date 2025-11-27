@@ -57,6 +57,7 @@ const VoiceSearchButton = ({ onVoiceResult }) => {
   return (
     <>
       <motion.button
+        type="button"
         className={`voice-search-btn ${isListening ? 'listening' : ''}`}
         onClick={handleClick}
         whileHover={{ scale: 1.05 }}
