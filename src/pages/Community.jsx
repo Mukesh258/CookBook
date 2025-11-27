@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import RecipeCard from '../components/RecipeCard';
 import RatingStars from '../components/RatingStars';
 import { getUploadedRecipes, removeUploadedRecipe } from '../utils/localStorage';
+import { getUploadedRecipesFromServer, deleteUploadedRecipeFromServer } from '../utils/api';
 import { translateText } from '../utils/translation';
 import { getCurrentLanguage } from '../utils/translation';
 import TextPressure from '../components/TextPressure';
@@ -43,15 +44,63 @@ const Community = () => {
   }, []);
 
   const loadRecipes = () => {
-    const uploaded = getUploadedRecipes();
-    setRecipes(uploaded);
+    // Load uploaded recipes from server and localStorage, merge without duplicates
+    (async () => {
+      const server = await getUploadedRecipesFromServer().catch(() => []);
+      const local = getUploadedRecipes();
+      const all = [...(server || []), ...(local || [])];
+      // Normalize unique by id (server numeric id or local id string)
+      const seen = new Set();
+      const unique = [];
+      for (const r of all) {
+        const key = r.id || r.idMeal || r.strMeal || JSON.stringify(r);
+        if (!seen.has(key)) {
+          seen.add(key);
+          unique.push(r);
+        }
+      }
+      setRecipes(unique);
+    })();
   };
 
-  const handleRemove = (recipeId) => {
-    if (window.confirm('Are you sure you want to remove this recipe?')) {
-      removeUploadedRecipe(recipeId);
+  const handleRemove = (recipe) => {
+    if (!recipe) return;
+    if (!window.confirm('Are you sure you want to remove this recipe?')) return;
+
+    (async () => {
+      const id = recipe.id;
+      let deletedFromServer = false;
+      // If recipe has a numeric id, try to delete from json-server
+      if (typeof id === 'number') {
+        deletedFromServer = await deleteUploadedRecipeFromServer(id).catch(() => false);
+      }
+
+      // If recipe has an id (local or server), remove by id; otherwise remove by name (covers old entries)
+      if (id !== undefined && id !== null) {
+        try {
+          removeUploadedRecipe(id);
+        } catch (err) {
+          // ignore
+        }
+      } else {
+        // remove by name fallback
+        try {
+          const name = recipe.name || recipe.strMeal;
+          // lazy-import the helper to avoid circular issues
+          const { removeUploadedRecipeByName } = await import('../utils/localStorage');
+          removeUploadedRecipeByName(name);
+        } catch (err) {
+          // ignore
+        }
+      }
+
+      if (!deletedFromServer && typeof id === 'number') {
+        // warn the user if server deletion failed
+        alert('Could not delete recipe from server; it was removed locally (if present).');
+      }
+
       loadRecipes();
-    }
+    })();
   };
 
   return (
@@ -109,22 +158,29 @@ const Community = () => {
           <div className="recipes-grid">
             {recipes.map((recipe, index) => (
               <motion.div
-                key={recipe.id}
+                key={recipe.id || recipe.idMeal || recipe.strMeal || index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="community-recipe-card"
               >
-                <RecipeCard recipe={recipe} index={index} />
-                <div className="community-recipe-info">
-                  <RatingStars recipeId={recipe.id} />
                   <button
-                    className="remove-button"
-                    onClick={() => handleRemove(recipe.id)}
+                    className="card-delete"
+                    onClick={() => handleRemove(recipe)}
                     title={translations.remove || 'Remove'}
                   >
                     <i className="fas fa-trash"></i>
                   </button>
+                <RecipeCard recipe={recipe} index={index} />
+                <div className="community-recipe-info">
+                  <RatingStars recipeId={recipe.id} />
+                    <button
+                      className="remove-button"
+                      onClick={() => handleRemove(recipe)}
+                      title={translations.remove || 'Remove'}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
                 </div>
               </motion.div>
             ))}
