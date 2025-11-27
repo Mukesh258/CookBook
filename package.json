@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CookBook: Your Virtual Kitchen Assistant - A modern, multilingual recipe discovery website",
   "private": true,
+  "type": "module",
   "dependencies": {
     "framer-motion": "^10.16.16",
     "gsap": "^3.13.0",
@@ -10,15 +11,16 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0"
+    "react-router-dom": "^6.20.0",
+    "json-server": "^0.17.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.0.8",
-    "vite-plugin-pwa": "^0.17.4",
-    "json-server": "^0.17.3"
+    "vite-plugin-pwa": "^0.17.4"
   },
   "scripts": {
+    "start": "node server.js",
     "dev": "vite",
     "serve:api": "json-server --watch db.json --port 3000",
     "build": "vite build",
