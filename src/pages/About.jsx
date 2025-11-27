@@ -137,16 +137,13 @@ const About = () => {
             </h2>
             <div className="tech-list">
               <div className="tech-item">
-                <strong>Frontend:</strong> React, React Router, Framer Motion
+                <strong>Frontend:</strong> React
               </div>
               <div className="tech-item">
                 <strong>{translations.api || 'APIs'}:</strong> TheMealDB, LibreTranslate, Web Speech API
               </div>
               <div className="tech-item">
-                <strong>Storage:</strong> localStorage
-              </div>
-              <div className="tech-item">
-                <strong>PWA:</strong> Service Worker, Web Manifest
+                <strong>Storage:</strong> JSON server, Local Storage
               </div>
             </div>
           </section>
