@@ -174,13 +174,22 @@ const Community = () => {
                 <RecipeCard recipe={recipe} index={index} />
                 <div className="community-recipe-info">
                   <RatingStars recipeId={recipe.id} />
-                    <button
-                      className="remove-button"
-                      onClick={() => handleRemove(recipe)}
-                      title={translations.remove || 'Remove'}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <Link
+                        to={`/community/edit/${recipe.id}`}
+                        className="btn btn-outline"
+                        title="Edit"
+                      >
+                        <i className="fas fa-edit"></i>
+                      </Link>
+                      <button
+                        className="remove-button"
+                        onClick={() => handleRemove(recipe)}
+                        title={translations.remove || 'Remove'}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
                 </div>
               </motion.div>
             ))}
