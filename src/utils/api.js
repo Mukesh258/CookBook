@@ -82,7 +82,8 @@ export const parseRecipeIngredients = (recipe) => {
 };
 
 // Local JSON server (dev) — optional endpoints for uploaded recipes
-const SERVER_BASE = 'http://localhost:3000';
+// server.js mounts the json-server router at `/api`, so include that prefix
+const SERVER_BASE = 'http://localhost:3000/api';
 
 export const getUploadedRecipesFromServer = async () => {
   try {
@@ -136,6 +137,22 @@ export const deleteUploadedRecipeFromServer = async (id) => {
   } catch (error) {
     console.warn('Could not delete recipe from server:', error);
     return false;
+  }
+};
+
+export const putUploadedRecipe = async (id, recipe) => {
+  try {
+    const res = await fetch(`${SERVER_BASE}/recipes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(recipe)
+    });
+    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+    const saved = await res.json();
+    return saved;
+  } catch (error) {
+    console.warn('Could not update recipe on server:', error);
+    return null;
   }
 };
 
