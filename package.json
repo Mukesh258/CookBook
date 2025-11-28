@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CookBook: Your Virtual Kitchen Assistant - A modern, multilingual recipe discovery website",
   "private": true,
+  "type": "module",
   "dependencies": {
     "framer-motion": "^10.16.16",
     "gsap": "^3.13.0",
@@ -21,6 +22,7 @@
   "scripts": {
     "dev": "vite",
     "serve:api": "json-server --watch db.json --port 3000",
+    "server": "node server.js",
     "build": "vite build",
     "preview": "vite preview"
   }
