@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { saveUploadedRecipe } from '../utils/localStorage';
-import { postUploadedRecipe } from '../utils/api';
+import { saveUploadedRecipe, updateUploadedRecipe } from '../utils/localStorage';
+import { postUploadedRecipe, putUploadedRecipe } from '../utils/api';
 import { translateText } from '../utils/translation';
 import { getCurrentLanguage } from '../utils/translation';
 import './UploadRecipeForm.css';
 
-const UploadRecipeForm = ({ onSuccess }) => {
+const UploadRecipeForm = ({ onSuccess, initialData = null, editMode = false }) => {
   const [formData, setFormData] = useState({
     name: '',
     cuisine: '',
@@ -20,6 +20,21 @@ const UploadRecipeForm = ({ onSuccess }) => {
   const [submitting, setSubmitting] = useState(false);
 
   React.useEffect(() => {
+    // if initialData provided (edit mode), populate the form
+    if (initialData) {
+      const recipe = initialData;
+      const ingredients = recipe.ingredients || (recipe.strInstructions ? [] : []);
+      const steps = recipe.steps || (recipe.strInstructions ? recipe.strInstructions.split('\n').filter(Boolean) : []);
+      setFormData({
+        name: recipe.name || recipe.strMeal || '',
+        cuisine: recipe.cuisine || recipe.strArea || '',
+        category: recipe.category || recipe.strCategory || '',
+        prepTime: recipe.prepTime || recipe.prepTime || '',
+        image: recipe.image || recipe.strMealThumb || '',
+        ingredients: ingredients.length ? ingredients : [{ name: '', measure: '' }],
+        steps: steps.length ? steps : ['']
+      });
+    }
     const loadTranslations = async () => {
       const lang = getCurrentLanguage();
       const texts = {
@@ -114,16 +129,26 @@ const UploadRecipeForm = ({ onSuccess }) => {
       strInstructions: formData.steps.join('\n')
     };
 
-    // Try to POST to local json-server first, fall back to localStorage
     let saved = null;
-    try {
-      saved = await postUploadedRecipe(recipe);
-    } catch (err) {
-      saved = null;
-    }
+    if (editMode && initialData) {
+      // Editing existing recipe
+      const id = initialData.id;
+      if (typeof id === 'number') {
+        saved = await putUploadedRecipe(id, { ...initialData, ...recipe }).catch(() => null);
+      } else if (id) {
+        saved = updateUploadedRecipe({ ...initialData, ...recipe });
+      }
+    } else {
+      // Create new recipe: try server then fallback to local
+      try {
+        saved = await postUploadedRecipe(recipe);
+      } catch (err) {
+        saved = null;
+      }
 
-    if (!saved) {
-      saved = saveUploadedRecipe(recipe);
+      if (!saved) {
+        saved = saveUploadedRecipe(recipe);
+      }
     }
 
     if (saved) {
