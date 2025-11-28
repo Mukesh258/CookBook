@@ -105,6 +105,25 @@ export const removeUploadedRecipeByName = (name) => {
   }
 };
 
+export const updateUploadedRecipe = (updatedRecipe) => {
+  try {
+    const uploaded = getUploadedRecipes();
+    const idx = uploaded.findIndex(r => r.id === updatedRecipe.id);
+    if (idx === -1) return null;
+    const merged = {
+      ...uploaded[idx],
+      ...updatedRecipe,
+      updatedAt: new Date().toISOString()
+    };
+    uploaded[idx] = merged;
+    localStorage.setItem(UPLOADED_RECIPES_KEY, JSON.stringify(uploaded));
+    return merged;
+  } catch (error) {
+    console.error('Error updating uploaded recipe:', error);
+    return null;
+  }
+};
+
 // Ratings
 export const getRecipeRating = (recipeId) => {
   try {
