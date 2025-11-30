@@ -79,7 +79,7 @@
 .remove-button {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+    left: 1rem;
   background: rgba(231, 76, 60, 0.9);
   color: white;
   border: none;
