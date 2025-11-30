@@ -68,16 +68,7 @@ const MyCookbook = () => {
           <p>Your saved recipes</p>
         </motion.div>
 
-        {savedRecipes.length > 0 && (
-          <div className="sort-controls">
-            <label>Sort by:</label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="recent">Most Recent</option>
-              <option value="name">Name</option>
-              <option value="cuisine">Cuisine</option>
-            </select>
-          </div>
-        )}
+        {/* sort controls removed as requested */}
 
         {savedRecipes.length === 0 ? (
           <motion.div
@@ -106,7 +97,7 @@ const MyCookbook = () => {
                 <button
                   className="remove-button"
                   onClick={() => handleRemove(recipe.idMeal || recipe.id)}
-                  title={translations.remove || 'Remove'}
+                  title={t('removeRecipe') || 'Remove'}
                 >
                   <i className="fas fa-trash"></i>
                 </button>
